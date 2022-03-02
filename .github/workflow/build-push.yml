@@ -1,0 +1,29 @@
+name: docker-build-push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip build')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: build
+        uses: actions/checkout@v2
+      
+      - name: Login to DockerHub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get the version number
+        id: vars
+        run: echo "{{ github.event.head_commit.id }}"
+
+      - name: Build the latest docker image
+        working-directory: ./producer
+        run: docker build -t tazimtaz/producer_mq:latest .
+      - name: Push the latest docker image
+        working-directory: ./recevier
+        run: docker push tazimtaz/recevier_mq:latest
