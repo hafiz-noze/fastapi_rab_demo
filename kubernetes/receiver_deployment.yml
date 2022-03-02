@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-receiver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq-receiver
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-receiver
+    spec:
+      containers:
+      - name: rabbitmq-receiver
+        image: tazimtaz/recevier_mq:latest
+        ports:
+        - containerPort: 8001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-receiver-service
+spec:
+  type: ClusterIP
+  selector:
+    app: rabbitmq-receiver
+  ports:
+  - port: 8001
