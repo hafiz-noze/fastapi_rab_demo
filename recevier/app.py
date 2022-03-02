@@ -12,8 +12,8 @@ async def root():
 async def post_message():
     try:
         connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host="localhost")
-            )
+        pika.ConnectionParameters(host="10.0.166.131", port=5672, 
+        credentials=pika.PlainCredentials("guest", "PASSWORD")))
         channel = connection.channel()
         channel.queue_declare(queue='hello')
         #channel.exchange_declare(exchange='logs', exchange_type='direct')
