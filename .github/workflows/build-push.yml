@@ -21,9 +21,13 @@ jobs:
         id: vars
         run: echo "{{ github.event.head_commit.id }}"
 
-      - name: Build the latest docker image
+      - name: Build and push the latest producer image
         working-directory: ./producer
-        run: docker build -t tazimtaz/producer_mq:latest .
-      - name: Push the latest docker image
+        run: |
+          docker build -t tazimtaz/producer_mq:latest .
+          docker push tazimtaz/producer_mq:latest
+      - name: Build and push the latest recevier image
         working-directory: ./recevier
-        run: docker push tazimtaz/recevier_mq:latest
+        run: |
+          docker build -t tazimtaz/recevier_mq:latest .
+          docker push tazimtaz/recevier_mq:latest
