@@ -10,25 +10,20 @@ async def root():
 
 
 @app.post("/hello")
-async def post_message(message: str = Body(...)):
+async def post_message(message: str = Body(..., example="Hello World!")):
     try:
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(host="localhost")
             )
         channel = connection.channel()
-        channel.exchange_declare(exchange='logs', exchange_type='direct')
+        #channel.exchange_declare(exchange='logs', exchange_type='direct')
 
-        severity = ['hello', 'message', 'error']
-        messages = ['Hafizur', 'message', 'error']
+        #severity = ['hello', 'message', 'error']
+        #messages = ['Hafizur', 'message', 'error']
 
-        for i in range(10):
-            randomNum = random.randint(0, len(severity)-1)
-            message = random.choice(messages)
-            routing_key = severity[randomNum]
-            channel.basic_publish(exchange='logs', routing_key=routing_key, body=message)
-            print(" [x] Sent %r:%r" % (routing_key, message))
+        channel.queue_declare(queue='hello')
 
-        channel.exchange_delete(exchange='logs', if_unused=False)
+        channel.basic_publish(exchange='', routing_key='hello', body=message)
 
         await connection.close()
 
