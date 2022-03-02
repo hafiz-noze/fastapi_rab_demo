@@ -15,6 +15,7 @@ spec:
       containers:
       - name: rabbitmq-producer
         image: tazimtaz/producer_mq:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
 

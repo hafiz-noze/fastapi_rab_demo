@@ -15,6 +15,7 @@ spec:
       containers:
       - name: rabbitmq-receiver
         image: tazimtaz/recevier_mq:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8001
 
