@@ -13,14 +13,11 @@ async def root():
 def post_message(message: str):
     try:
         connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host="rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
+        pika.ConnectionParameters(host="rabbit@rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
         credentials=pika.PlainCredentials("user", "PASSWORD")))
             
         channel = connection.channel()
-        #channel.exchange_declare(exchange='logs', exchange_type='direct')
-
-        #severity = ['hello', 'message', 'error']
-        #messages = ['Hafizur', 'message', 'error']
+    
 
         channel.queue_declare(queue='hello')
 
