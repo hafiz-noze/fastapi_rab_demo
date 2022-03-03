@@ -9,7 +9,7 @@ async def root():
     return {"message": "Welcome to RabbitMQ-FastAPI"}
 
 
-@app.post("/hello/{message}")
+@app.get("/hello/{message}")
 def post_message(message: str):
     try:
         connection = pika.BlockingConnection(
