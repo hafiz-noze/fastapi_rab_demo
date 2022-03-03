@@ -10,7 +10,7 @@ async def root():
 
 
 @app.get("/hello/{message}")
-def post_message(message: str = Body(..., example="Hello World!")):
+def post_message(message: str):
     try:
         connection = pika.BlockingConnection(
         pika.ConnectionParameters(host="rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 

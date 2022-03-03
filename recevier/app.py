@@ -20,17 +20,14 @@ def callback(ch, method, properties, body):
 
 
 @app.post("/message")
-def post_message():
+def get_message():
     try:
         connection = pika.BlockingConnection(
         pika.ConnectionParameters(host="rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
         credentials=pika.PlainCredentials("user", "PASSWORD")))
         channel = connection.channel()
         channel.queue_declare(queue='hello')
-        #channel.exchange_declare(exchange='logs', exchange_type='direct')
-        #result = channel.queue_declare(exclusive=True, queue="")
-        #queue_name = result.method.queue
-        #channel.queue_bind(exchange='logs', queue=queue_name, routing_key='hello')
+        
         channel.basic_consume(on_message_callback=callback, queue="hello", auto_ack=True)
         print(" [*] Waiting for messages. To exit press CTRL+C")
         channel.start_consuming()
