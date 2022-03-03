@@ -9,8 +9,8 @@ async def root():
     return {"message": "Welcome to RabbitMQ-FastAPI"}
 
 
-@app.post("/hello/{message}")
-async def post_message(message: str = Body(..., example="Hello World!")):
+@app.get("/hello/{message}")
+def post_message(message: str = Body(..., example="Hello World!")):
     try:
         connection = pika.BlockingConnection(
         pika.ConnectionParameters(host="rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
@@ -26,9 +26,9 @@ async def post_message(message: str = Body(..., example="Hello World!")):
 
         channel.basic_publish(exchange='', routing_key='hello', body=message)
 
-        await connection.close()
+        connection.close()
 
-        return "Successfully sended message do queue"
+        return {"Successfully sended {} do queue".format(message)}
 
     except Exception:
         raise HTTPException(
