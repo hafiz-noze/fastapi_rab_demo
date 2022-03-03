@@ -11,27 +11,21 @@ async def root():
 
 @app.get("/hello/{message}")
 def post_message(message: str):
-    try:
-        connection = pika.BlockingConnection(
-        pika.ConnectionParameters(host="rabbit@rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
-        credentials=pika.PlainCredentials("user", "PASSWORD")))
-            
-        channel = connection.channel()
-    
 
-        channel.queue_declare(queue='hello')
+    connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host="rabbit@rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
+    credentials=pika.PlainCredentials("user", "PASSWORD")))
+        
+    channel = connection.channel()
 
-        channel.basic_publish(exchange='', routing_key='hello', body=message)
 
-        connection.close()
+    channel.queue_declare(queue='hello')
 
-        return {"Successfully sended {} do queue".format(message)}
+    channel.basic_publish(exchange='', routing_key='hello', body=message)
 
-    except Exception:
-        raise HTTPException(
-            status_code=400,
-            detail="Error when trying to send message to queue",
-        )
+    connection.close()
+
+    return {"Successfully sended {} do queue".format(message)}
         
 
 
