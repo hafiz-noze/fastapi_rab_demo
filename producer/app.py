@@ -13,7 +13,7 @@ async def root():
 def post_message(message: str):
 
     connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host="rabbitmq", port=5672, 
+    pika.ConnectionParameters(host="rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local", port=5672, 
     credentials=pika.PlainCredentials("user", "PASSWORD")))
         
     channel = connection.channel()
@@ -27,5 +27,3 @@ def post_message(message: str):
 
     return {"Successfully sended {} do queue".format(message)}
         
-
-
