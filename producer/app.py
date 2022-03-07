@@ -13,7 +13,7 @@ async def root():
 def post_message(message: str):
 
     connection = pika.BlockingConnection(
-    pika.ConnectionParameters('amqp://user:PASSWORD@104.45.177.233:15672/'))
+    pika.ConnectionParameters("amdq://user:PASSWORD@rabbitmq-0.rabbitmq-headless.keda.svc.cluster.local:5632"))
         
     channel = connection.channel()
 
