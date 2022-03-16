@@ -12,8 +12,9 @@ async def root():
 @app.get("/hello/{message}")
 def post_message(message: str):
 
+    credentials = pika.PlainCredentials('guest', 'PASSWORD')
     connection = pika.BlockingConnection(
-    pika.ConnectionParameters("ampq://user:PASSWORD@rabbitmq-headless.keda:5672"))
+    pika.ConnectionParameters("rabbitmq-headless.keda", 5672, '/', credentials))
         
     channel = connection.channel()
 
